@@ -1,10 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Label } from "@/components/ui/Labels";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/utils/utils";
-import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
-import { SignUpData } from "@/types";
+import { Camera } from "lucide-react";
+
+interface SignUpData {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  profilePhoto: File | null;
+}
 
 export default function SignupFormDemo() {
   const [formData, setFormData] = useState<SignUpData>({
@@ -12,11 +18,22 @@ export default function SignupFormDemo() {
     lastname: "",
     email: "",
     password: "",
-    twitterpassword: "",
+    profilePhoto: null,
   });
 
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    if (e.target.type === "file" && e.target.files?.[0]) {
+      const file = e.target.files[0];
+      setFormData({ ...formData, profilePhoto: file });
+      // Create preview URL for the image
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    } else {
+      setFormData({ ...formData, [e.target.id]: e.target.value });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,42 +41,101 @@ export default function SignupFormDemo() {
     console.log("Form submitted:", formData);
   };
 
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
-        <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">Welcome to Arsenic</h2>
+        <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
+          Welcome to Arsenic
+        </h2>
         <form className="my-8" onSubmit={handleSubmit}>
+          <div className="mb-6 flex flex-col items-center">
+            <div 
+              className="relative w-24 h-24 rounded-full bg-gray-100 dark:bg-gray-800 mb-2 overflow-hidden cursor-pointer"
+              onClick={triggerFileInput}
+            >
+              {previewUrl ? (
+                <img 
+                  src={previewUrl} 
+                  alt="Profile preview" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <Camera className="w-8 h-8 text-gray-400" />
+                </div>
+              )}
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              id="profilePhoto"
+              accept="image/*"
+              className="hidden"
+              onChange={handleChange}
+            />
+            <Label 
+              htmlFor="profilePhoto" 
+              className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
+            >
+              {previewUrl ? "Change photo" : "Upload photo"}
+            </Label>
+          </div>
+
           <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
             <LabelInputContainer>
               <Label htmlFor="firstname">First name</Label>
-              <Input id="firstname" placeholder="Tyler" type="text" onChange={handleChange} />
+              <Input 
+                id="firstname" 
+                placeholder="Tyler" 
+                type="text" 
+                onChange={handleChange} 
+              />
             </LabelInputContainer>
             <LabelInputContainer>
               <Label htmlFor="lastname">Last name</Label>
-              <Input id="lastname" placeholder="Durden" type="text" onChange={handleChange} />
+              <Input 
+                id="lastname" 
+                placeholder="Durden" 
+                type="text" 
+                onChange={handleChange} 
+              />
             </LabelInputContainer>
           </div>
+
           <LabelInputContainer className="mb-4">
             <Label htmlFor="email">Email Address</Label>
-            <Input id="email" placeholder="projectmayhem@fc.com" type="email" onChange={handleChange} />
+            <Input 
+              id="email" 
+              placeholder="projectmayhem@fc.com" 
+              type="email" 
+              onChange={handleChange} 
+            />
           </LabelInputContainer>
-          <LabelInputContainer className="mb-4">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" placeholder="••••••••" type="password" onChange={handleChange} />
-          </LabelInputContainer>
+
           <LabelInputContainer className="mb-8">
-            <Label htmlFor="twitterpassword">Your Twitter Password</Label>
-            <Input id="twitterpassword" placeholder="••••••••" type="password" onChange={handleChange} />
+            <Label htmlFor="password">Password</Label>
+            <Input 
+              id="password" 
+              placeholder="••••••••" 
+              type="password" 
+              onChange={handleChange} 
+            />
           </LabelInputContainer>
-  
-          <button type="submit" className="bg-black text-white rounded-md w-full h-10 font-medium">
+
+          <button 
+            type="submit" 
+            className="bg-black text-white rounded-md w-full h-10 font-medium"
+          >
             Sign up &rarr;
           </button>
         </form>
       </div>
     </div>
   );
-  
 }
 
 const LabelInputContainer = ({ children }: { children: React.ReactNode }) => {
