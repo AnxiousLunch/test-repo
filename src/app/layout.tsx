@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { BackgroundBeams } from "@/components/ui/background-beams"; // Import BackgroundBeams
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,9 +26,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen w-full bg-neutral-950`}
       >
-        {children}
+        {/* BackgroundBeams component for all pages */}
+        <div className="absolute inset-0 z-0">
+          <BackgroundBeams />
+        </div>
+
+        {/* Page Content */}
+        <div className="relative z-50">{children}</div>
       </body>
     </html>
   );
