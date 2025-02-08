@@ -1,9 +1,13 @@
 import BackgroundBeamsDemo from "@/components/background-beams-demo"
+import SignupFormDemo from "@/components/signup-form-demo"
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="">
       <BackgroundBeamsDemo />
+      <div className="">
+        <SignupFormDemo />
+      </div>
     </main>
   )
 }
