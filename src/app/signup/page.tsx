@@ -42,15 +42,47 @@ export default function SignupFormDemo() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
-
+  // Add this function definition
   const triggerFileInput = () => {
-    fileInputRef.current?.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    
+    try {
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === 'profilePhoto' && value) {
+          formDataToSend.append('profilePhoto', value);
+        } else {
+          formDataToSend.append(key, value as string);
+        }
+      });
+
+      const response = await fetch(`${API_URL}/api/signup`, {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+
+      localStorage.setItem('token', data.token);
+      window.location.href = '/dashboard';
+    } catch (error) {
+      console.error('Signup error:', error);
+    }
+  };
+  
+  
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
