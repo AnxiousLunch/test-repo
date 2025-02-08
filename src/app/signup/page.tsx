@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react";
 import { Label } from "@/components/ui/Labels";
 import { Input } from "@/components/ui/input";
 import { Camera } from "lucide-react";
+import Link from "next/link";
 
 interface SignUpData {
   firstname: string;
@@ -132,6 +133,15 @@ export default function SignupFormDemo() {
           >
             Sign up &rarr;
           </button>
+          <p className="text-center text-sm text-neutral-600 dark:text-neutral-400 mt-6">
+            Have an account?{" "}
+            <Link 
+              href="/login"
+              className="text-black dark:text-white hover:underline font-medium"
+            >
+              Log in
+            </Link>
+          </p>
         </form>
       </div>
     </div>

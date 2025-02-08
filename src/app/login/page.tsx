@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/Labels";
 import { Input } from "@/components/ui/input";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import Link from "next/link";
 
 interface LoginData {
   email: string;
@@ -115,13 +116,13 @@ export default function LoginFormDemo() {
           </div>
 
           <p className="text-center text-sm text-neutral-600 dark:text-neutral-400 mt-6">
-            Don&aps;t have an account?{" "}
-            <button
-              type="button"
+            Don&apos;t have an account?{" "}
+            <Link 
+              href="/signup"
               className="text-black dark:text-white hover:underline font-medium"
             >
               Sign up
-            </button>
+            </Link>
           </p>
         </form>
       </div>

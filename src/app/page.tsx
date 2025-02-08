@@ -1,6 +1,6 @@
 "use client";
 import { BackgroundBeams } from "@/components/ui/background-beams";
-import LoginFormDemo from "@/components/login-form-demo";
+import LoginFormDemo from "@/app/login/page";
 
 export default function Home() {
   return (
