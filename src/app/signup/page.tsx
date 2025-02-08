@@ -8,8 +8,11 @@ import Link from "next/link";
 interface SignUpData {
   firstname: string;
   lastname: string;
+  username: string;
   email: string;
   password: string;
+  dob: string;
+  gender: string;
   profilePhoto: File | null;
 }
 
@@ -17,19 +20,21 @@ export default function SignupFormDemo() {
   const [formData, setFormData] = useState<SignUpData>({
     firstname: "",
     lastname: "",
+    username: "",
     email: "",
     password: "",
+    dob: "",
+    gender: "",
     profilePhoto: null,
   });
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.type === "file" && e.target.files?.[0]) {
-      const file = e.target.files[0];
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (e.target.type === "file" && (e.target as HTMLInputElement).files?.[0]) {
+      const file = (e.target as HTMLInputElement).files[0];
       setFormData({ ...formData, profilePhoto: file });
-      // Create preview URL for the image
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
     } else {
@@ -59,86 +64,65 @@ export default function SignupFormDemo() {
               onClick={triggerFileInput}
             >
               {previewUrl ? (
-                <img 
-                  src={previewUrl} 
-                  alt="Profile preview" 
-                  className="w-full h-full object-cover"
-                />
+                <img src={previewUrl} alt="Profile preview" className="w-full h-full object-cover" />
               ) : (
                 <div className="flex items-center justify-center h-full">
                   <Camera className="w-8 h-8 text-gray-400" />
                 </div>
               )}
             </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              id="profilePhoto"
-              accept="image/*"
-              className="hidden"
-              onChange={handleChange}
-            />
-            <Label 
-              htmlFor="profilePhoto" 
-              className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
-            >
+            <input ref={fileInputRef} type="file" id="profilePhoto" accept="image/*" className="hidden" onChange={handleChange} />
+            <Label htmlFor="profilePhoto" className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer">
               {previewUrl ? "Change photo" : "Upload photo"}
             </Label>
           </div>
 
-          <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-            <LabelInputContainer>
-              <Label htmlFor="firstname">First name</Label>
-              <Input 
-                id="firstname" 
-                placeholder="Tyler" 
-                type="text" 
-                onChange={handleChange} 
-              />
-            </LabelInputContainer>
-            <LabelInputContainer>
-              <Label htmlFor="lastname">Last name</Label>
-              <Input 
-                id="lastname" 
-                placeholder="Durden" 
-                type="text" 
-                onChange={handleChange} 
-              />
-            </LabelInputContainer>
-          </div>
+          <LabelInputContainer>
+            <Label htmlFor="firstname">First Name</Label>
+            <Input id="firstname" placeholder="Tyler" type="text" onChange={handleChange} />
+          </LabelInputContainer>
 
-          <LabelInputContainer className="mb-4">
+          <LabelInputContainer>
+            <Label htmlFor="lastname">Last Name</Label>
+            <Input id="lastname" placeholder="Durden" type="text" onChange={handleChange} />
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <Label htmlFor="username">Username</Label>
+            <Input id="username" placeholder="tyler_durden" type="text" onChange={handleChange} />
+          </LabelInputContainer>
+
+          <LabelInputContainer>
             <Label htmlFor="email">Email Address</Label>
-            <Input 
-              id="email" 
-              placeholder="projectmayhem@fc.com" 
-              type="email" 
-              onChange={handleChange} 
-            />
+            <Input id="email" placeholder="projectmayhem@fc.com" type="email" onChange={handleChange} />
           </LabelInputContainer>
 
-          <LabelInputContainer className="mb-8">
+          <LabelInputContainer>
+            <Label htmlFor="dob">Date of Birth</Label>
+            <Input id="dob" type="date" onChange={handleChange} />
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <Label htmlFor="gender">Gender</Label>
+            <select id="gender" className="border rounded-md p-2 dark:bg-black dark:text-white text-gray-500" onChange={handleChange}>
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </LabelInputContainer>
+
+          <LabelInputContainer>
             <Label htmlFor="password">Password</Label>
-            <Input 
-              id="password" 
-              placeholder="••••••••" 
-              type="password" 
-              onChange={handleChange} 
-            />
+            <Input id="password" placeholder="••••••••" type="password" onChange={handleChange} />
           </LabelInputContainer>
 
-          <button 
-            type="submit" 
-            className="bg-black text-white rounded-md w-full h-10 font-medium"
-          >
+          <button type="submit" className="bg-black text-white rounded-md w-full h-10 font-medium">
             Sign up &rarr;
           </button>
           <p className="text-center text-sm text-neutral-600 dark:text-neutral-400 mt-6">
-            Have an account?{" "}
-            <Link 
-              href="/login"
-              className="text-black dark:text-white hover:underline font-medium"
-            >
+            Have an account? {" "}
+            <Link href="/login" className="text-black dark:text-white hover:underline font-medium">
               Log in
             </Link>
           </p>

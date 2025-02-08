@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/Labels";
 import { Input } from "@/components/ui/input";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
-import Link from "next/link";
 
 interface LoginData {
   email: string;
@@ -102,27 +101,27 @@ export default function LoginFormDemo() {
                 type="button"
                 className="flex items-center justify-center h-10 w-full border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
               >
-               <IconBrandGoogle className="w-5 h-5 text-gray-700 opacity-80" />
-               <span className="ml-2 text-gray-600">Google</span>
+                <IconBrandGoogle className="w-5 h-5" />
+                <span className="ml-2">Google</span>
               </button>
               <button
                 type="button"
                 className="flex items-center justify-center h-10 w-full border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
               >
-                <IconBrandGithub className="w-5 h-5 text-gray-700 opacity-80" />
-                <span className="ml-2 text-gray-600">GitHub</span>
+                <IconBrandGithub className="w-5 h-5" />
+                <span className="ml-2">GitHub</span>
               </button>
             </div>
           </div>
 
           <p className="text-center text-sm text-neutral-600 dark:text-neutral-400 mt-6">
-            Don&apos;t have an account?{" "}
-            <Link 
-              href="/signup"
+            Don&aps;t have an account?{" "}
+            <button
+              type="button"
               className="text-black dark:text-white hover:underline font-medium"
             >
               Sign up
-            </Link>
+            </button>
           </p>
         </form>
       </div>
